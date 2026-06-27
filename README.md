@@ -41,63 +41,69 @@ The following Shopify tools complement these third-party tools to ease app devel
 - [File-based routing](https://github.com/Shopify/shopify-frontend-template-react/blob/main/Routes.jsx) makes creating new pages easier.
 - [`@shopify/i18next-shopify`](https://github.com/Shopify/i18next-shopify) is a plugin for [`i18next`](https://www.i18next.com/) that allows translation files to follow the same JSON schema used by Shopify [app extensions](https://shopify.dev/docs/apps/checkout/best-practices/localizing-ui-extensions#how-it-works) and [themes](https://shopify.dev/docs/themes/architecture/locales/storefront-locale-files#usage).
 
+## Repository
+
+- Public repository: https://github.com/LalitPawar2004/shopify-announcement-banner-app
+
 ## Getting started
 
 ### Requirements
 
-1. You must [download and install Node.js](https://nodejs.org/en/download/) if you don't already have it.
-1. You must [create a Shopify partner account](https://partners.shopify.com/signup) if you don’t have one.
-1. You must create a store for testing if you don't have one, either a [development store](https://help.shopify.com/en/partners/dashboard/development-stores#create-a-development-store) or a [Shopify Plus sandbox store](https://help.shopify.com/en/partners/dashboard/managing-stores/plus-sandbox-store).
+1. Install [Node.js](https://nodejs.org/en/download/).
+2. Install the [Shopify CLI](https://shopify.dev/docs/apps/tools/cli).
+3. Create a Shopify Partners account and a development store.
+4. Create a MongoDB database or MongoDB Atlas cluster.
 
-### Installing the template
+### Required environment variables
 
-This template can be installed using your preferred package manager:
+The app needs the following environment variables:
 
-Using yarn:
+- `SHOPIFY_API_KEY` – the app API key from your Shopify Partners dashboard
+- `SHOPIFY_API_SECRET` – the app secret from your Shopify Partners dashboard
+- `SCOPES` – the permissions required by the app, for example `write_products`
+- `MONGODB_URI` – the MongoDB connection string for the announcement database
+- `BACKEND_PORT` – optional; defaults to `3000`
+- `FRONTEND_PORT` – optional; used by Vite during development
+- `HOST` – optional; set by Shopify CLI when using tunnels
 
-```shell
-yarn create @shopify/app --template=node
-```
+### Install dependencies
 
-Using npm:
-
-```shell
-npm init @shopify/app@latest -- --template=node
-```
-
-Using pnpm:
-
-```shell
-pnpm create @shopify/app@latest --template=node
-```
-
-This will clone the template and install the required dependencies.
-
-#### Local Development
-
-[The Shopify CLI](https://shopify.dev/docs/apps/tools/cli) connects to an app in your Partners dashboard. It provides environment variables, runs commands in parallel, and updates application URLs for easier development.
-
-You can develop locally using your preferred package manager. Run one of the following commands from the root of your app.
-
-Using yarn:
+From the project root:
 
 ```shell
-yarn dev
+npm install
 ```
 
-Using npm:
+### Local Development
+
+Run the app from the project root using Shopify CLI:
 
 ```shell
 npm run dev
 ```
 
-Using pnpm:
+The CLI will open your app in the Shopify admin after authentication.
+
+If you need to build the frontend manually, use:
 
 ```shell
-pnpm run dev
+cd web/frontend
+SHOPIFY_API_KEY=<your-api-key> npm run build
 ```
 
-Open the URL generated in your console. Once you grant permission to the app, you can start development.
+### App configuration
+
+Update `shopify.app.toml` with your app URL and redirect URL values. For example:
+
+```toml
+application_url = "https://your-app-url.example"
+[auth]
+redirect_urls = [ "https://your-app-url.example/api/auth" ]
+```
+
+### Shopify app and theme embed
+
+This app saves announcements to MongoDB and syncs them to the store using a Shopify metafield. The installed theme app extension reads that metafield and displays a storefront banner.
 
 ## Deployment
 
