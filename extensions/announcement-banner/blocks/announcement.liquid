@@ -1,0 +1,40 @@
+{% if shop.metafields.my_app.announcement %}
+  <style>
+    .announcement-banner {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 9999;
+      background: #1a1a2e;
+      color: #ffffff;
+      text-align: center;
+      padding: 10px 20px;
+      font-size: 14px;
+      font-weight: 500;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    body {
+      margin-top: 48px;
+    }
+
+    @media (max-width: 740px) {
+      .announcement-banner {
+        font-size: 13px;
+      }
+    }
+  </style>
+  <div class="announcement-banner">
+    {{ shop.metafields.my_app.announcement.value }}
+  </div>
+{% endif %}
+
+{% schema %}
+{
+  "name": "Announcement Banner",
+  "target": "body",
+  "settings": []
+}
+{% endschema %}
